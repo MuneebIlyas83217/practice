@@ -1,0 +1,46 @@
+# dependencies
+node_modules/
+**/node_modules/
+
+# logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# build outputs
+dist/
+build/
+out/
+coverage/
+.nyc_output/
+
+# caches
+.cache/
+.parcel-cache/
+.eslintcache
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# runtime
+*.pid
+*.pid.lock
+
+# package manager files (optional: keep lockfiles if you want reproducible installs)
+# If you want to keep lockfiles, delete these 3 lines:
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
