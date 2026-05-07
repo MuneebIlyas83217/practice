@@ -7,6 +7,6 @@ router.get('/',(req,res)=>{
     res.send("status is ok ");
 })
 
-router.post('/create',createTodo)
+router.post('/create-todo',createTodo)
 
 export default router;

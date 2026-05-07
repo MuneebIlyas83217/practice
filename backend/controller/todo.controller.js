@@ -1,4 +1,4 @@
-import todo from "../model/todo.js";
+import Todo from "../model/todo.js";
 
 export const createTodo = async (req, res) => {
 
@@ -7,17 +7,11 @@ export const createTodo = async (req, res) => {
         if (!title) {
             return res.json({ message: "Title field is required" })
         }
-        if (title) {
-            return title;
-        }
-        console.log(title);
-        
-        const todo = await todo.create({
+        const newTodo = await Todo.create({
             title
         })
-        await todo.save();
         res.json({
-            success: true, todo: todo
+            success: true, todo: newTodo
         })
 
     } catch (error) {
