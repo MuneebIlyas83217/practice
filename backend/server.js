@@ -1,17 +1,23 @@
 import express from "express";
 import db from './config/db.js'
 import authRoutes from './routes/auth.route.js';
-import docsRoutes from './routes/docs.route.js';
 import dotenv from "dotenv"
+import cors from "cors"
+import todoRoutes from "./routes/todo.route.js"
+
+
 dotenv.config();
 const app = express();
-app.use(express.json())
-const port = 3000;
 db();
 
-app.get('/home',authRoutes)
-app.get('/docs',docsRoutes)
+app.use(cors())
+app.use(express.json())
+
+const port = 3000;
+
 app.use('/auth',authRoutes)
+app.use('/todo',todoRoutes)
+
 
 
 
