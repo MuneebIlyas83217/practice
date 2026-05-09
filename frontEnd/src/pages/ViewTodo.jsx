@@ -20,6 +20,15 @@ export default function ViewTodo() {
         fetchTodos();
     }, []);
 
+    const handleToggleStatus = async (id) => {
+        try {
+            const response = await API.patch(`/update-todo-status/${id}`);
+            setTodos(todos.map(todo => todo._id === id ? response.data : todo));
+        } catch (error) {
+            console.error("Error updating status:", error);
+        }
+    };
+
 
 
 
@@ -41,6 +50,7 @@ export default function ViewTodo() {
                                 <input
                                     type="checkbox"
                                     checked={todo.completed}
+                                    onChange={() => handleToggleStatus(todo._id)}
                                     className="w-5 h-5 cursor-pointer accent-blue-500"
                                 />
                                 <span className={`text-lg ${todo.completed ? 'line-through text-gray-500' : 'text-gray-800'}`}>
