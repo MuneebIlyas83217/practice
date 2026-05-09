@@ -1,7 +1,7 @@
 import axios from "axios";
 const API =axios.create({
     baseURL:
-    "http://localhost:3000/auth",
+    "http://localhost:3000/todo",
 
 })
 export default API
