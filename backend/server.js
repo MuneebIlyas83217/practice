@@ -15,8 +15,8 @@ app.use(express.json())
 
 const port = 3000;
 
-app.use('/auth',authRoutes)
-app.use('/todo',todoRoutes)
+app.use('/auth',authRoutes) // localhost:3000/auth
+app.use('/todo',todoRoutes) // localhost:3000/todo
 
 
 

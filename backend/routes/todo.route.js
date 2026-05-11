@@ -1,11 +1,14 @@
 import express from "express";
 import { completedTodos, createTodo, deleteTodosbyid, getTodos, getTodosbyid, updatetitle } from "../controller/todo.controller.js";
+import { requireAuth } from "../middleware/auth.middleware.js";
 
 const router=express.Router();
 
 router.get('/',(req,res)=>{
     res.send("status is ok ");
 })
+
+router.use(requireAuth)
 
 router.post('/create-todo',createTodo)
 router.get('/get-todo',getTodos)

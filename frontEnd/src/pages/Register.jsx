@@ -1,8 +1,9 @@
 import { useState } from "react";
-import API from "../api";
-
+import API from "../Api";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -11,8 +12,10 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.post("/register", form);
+    const res = await API.post("/auth/register", form);
+    localStorage.setItem("authUser", JSON.stringify(res.data.user));
     alert("Registered!");
+    navigate("/todo");
   };
 
   return (
