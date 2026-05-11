@@ -11,8 +11,6 @@ yarn-error.log*
 pnpm-debug.log*
 
 # env / secrets
-.env
-.env.*
 !.env.example
 
 # build outputs
@@ -31,7 +29,6 @@ coverage/
 # OS / editor
 .DS_Store
 Thumbs.db
-.vscode/
 .idea/
 *.swp
 
@@ -44,3 +41,4 @@ Thumbs.db
 pnpm-lock.yaml
 yarn.lock
 package-lock.json
+config.bat

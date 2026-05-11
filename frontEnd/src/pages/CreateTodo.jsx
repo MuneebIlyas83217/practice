@@ -2,7 +2,6 @@ import { useState } from "react";
 import API from "../Api";
 import { useNavigate } from "react-router-dom";
 
-
 export default function CreateTodo() {
     const navigate = useNavigate();
     const [form, setForm] = useState({
@@ -13,13 +12,15 @@ export default function CreateTodo() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await API.post("/create-todo", form);
+        await API.post("/todo/create-todo", form);
         alert("created!");
+        setForm({ title: "", completed: false });
+        setShowForm(false);
     };
 
     if (!showForm) {
         return (
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-6 gap-3">
                 <button
                     onClick={() => setShowForm(true)}
                     className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-600 transition"
@@ -32,6 +33,12 @@ export default function CreateTodo() {
                 >
                     View Todo
                 </button>
+                <button
+                    onClick={() => navigate('/logout')}
+                    className="bg-gray-500 text-white px-6 py-2 rounded-lg shadow hover:bg-gray-600 transition"
+                >
+                    Logout
+                </button>
             </div>
         );
     }
@@ -41,7 +48,7 @@ export default function CreateTodo() {
             onSubmit={handleSubmit}
             className="bg-white p-6 rounded-lg shadow-md w-80 space-y-4"
         >
-            <h2 className="text-2xl font-bold text-center"> To DO</h2>
+            1<h2 className="text-2xl font-bold text-center">To Do</h2>
 
             <input
                 className="w-full p-2 border rounded"
