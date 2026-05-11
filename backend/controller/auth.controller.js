@@ -1,13 +1,11 @@
 import User from "../model/user.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
-export const register=async (req,res)=> {
-    try{
-    console.log("BODY 👉", req.body);
+export const register = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
 
-        const { name,  email, password } = req.body;
-
-        if (!name ||  !email || !password) {
+        if (!name || !email || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -16,90 +14,89 @@ export const register=async (req,res)=> {
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
-        const hashPassword=await bcrypt.hash(password,8)
+
+        const hashPassword = await bcrypt.hash(password, 8);
 
         const user = await User.create({
             name,
             email,
-            password:hashPassword
+            password: hashPassword
         });
 
-        res.status(201).json({
+        return res.status(201).json({
             message: "User registered successfully",
-            user
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email
+            }
         });
-
     } catch (error) {
-        console.error("ERROR 👉", error.message);
-        res.status(500).json({ message: error.message });
+        console.error("ERROR", error.message);
+        return res.status(500).json({ message: error.message });
     }
+};
 
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
 
-}
-
-
-export const login=async (req,res)=> {
-    try{
-    console.log("BODY 👉", req.body);
-
-        const {  email, password } = req.body;
-
-        if ( !email || !password) {
-            return res.send({ message: "All fields are required" });
+        if (!email || !password) {
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         const existingUser = await User.findOne({ email });
 
-        
-        const existingPassword=await bcrypt.compare(password,existingUser.password)
-
-        if (existingUser && existingPassword ) {
-            return res.send({ message: "Successfully logged in" });
+        if (!existingUser) {
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
+        const passwordMatches = await bcrypt.compare(password, existingUser.password);
+
+        if (!passwordMatches) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        return res.json({
+            message: "Successfully logged in",
+            user: {
+                id: existingUser._id,
+                name: existingUser.name,
+                email: existingUser.email
+            }
+        });
     } catch (error) {
-        console.error("ERROR 👉", error.message);
-        res.send({ message: "INVALID CREDENTIALS" });
+        console.error("ERROR", error.message);
+        return res.status(500).json({ message: "INVALID CREDENTIALS" });
     }
+};
 
+export const reset = async (req, res) => {
+    try {
+        const { email, password, New } = req.body;
 
-}
-
-
-export const reset=async (req,res)=> {
-    try{
-    console.log("BODY 👉", req.body);
-
-        const {  email, password,New } = req.body;
-
-        if ( !email || !password || !New) {
-            return res.send({ message: "All fields are required" });
+        if (!email || !password || !New) {
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         const existingUser = await User.findOne({ email });
 
-        
-        const existingPassword=await bcrypt.compare(password,existingUser.password)
-
-        if (!existingUser || !existingPassword ) {
-
-            return res.send({ message: "INVALID gmail or password" });
+        if (!existingUser) {
+            return res.status(401).json({ message: "INVALID gmail or password" });
         }
-        const salt = await bcrypt.genSalt(10);
-        const hashPassword=await bcrypt.hash(New,salt)
 
-            existingUser.password=New;
-            await existingUser.save();
-        // const Newhash=await bcrypt.hash(existingUser.password,8)
-        // const salt2 = await bcrypt.genSalt(10);
-        // const hash=await bcrypt.hash(existingUser.password,salt)
-            return res.send({message:"Password changed"})
+        const existingPassword = await bcrypt.compare(password, existingUser.password);
 
+        if (!existingPassword) {
+            return res.status(401).json({ message: "INVALID gmail or password" });
+        }
+
+        existingUser.password = await bcrypt.hash(New, 8);
+        await existingUser.save();
+
+        return res.json({ message: "Password changed" });
     } catch (error) {
-        console.error("ERROR 👉", error.message);
-        res.send({ message: "INVALID CREDENTIALS" });
+        console.error("ERROR", error.message);
+        return res.status(500).json({ message: "INVALID CREDENTIALS" });
     }
-
-
-}
-
+};

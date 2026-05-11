@@ -1,19 +1,20 @@
 import { useState } from "react";
-import API from "../api";
+import API from "../Api";
 import { useNavigate } from "react-router-dom";
-
 
 export default function Login() {
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await API.post("/login", form);
-    localStorage.setItem("token", res.data.token);
+    const res = await API.post("/auth/login", form);
+    localStorage.setItem("authUser", JSON.stringify(res.data.user));
     alert("Logged in!");
+    navigate("/todo");
   };
 
   return (
@@ -39,7 +40,9 @@ export default function Login() {
       <button className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
         Login
       </button>
-      <button onClick={()=>navigate("/register") }>Register</button>
+      <button type="button" onClick={() => navigate("/register")}>
+        Register
+      </button>
     </form>
   );
 }

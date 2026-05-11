@@ -11,19 +11,7 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.put('/reset', reset);
-// router.put("/user/:id", async (req, res) => {
-//   try {
-//     const updatedUser = await User.findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true }
-//     );
 
-//     res.json(updatedUser);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
     
 
 
